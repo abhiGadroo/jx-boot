@@ -1,36 +1,3 @@
-Skip to content
-Why GitHub? 
-Team
-Enterprise
-Explore 
-Marketplace
-Pricing 
-Search
-Sign in
-Sign up
-jx3-gitops-repositories
-/
-jx3-kubernetes
-Template
-519
-Code
-Issues
-4
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-jx3-kubernetes/versionStream/git-operator/job.yaml
-@pow-devops2020
-pow-devops2020 chore: upgrade version stream
-Latest commit b24c034 10 days ago
- History
- 2 contributors
-@pow-devops2020@jstrachan
-63 lines (63 sloc)  1.47 KB
- 
 apiVersion: batch/v1
 kind: Job
 metadata:
