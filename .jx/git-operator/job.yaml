@@ -1,0 +1,97 @@
+Skip to content
+Why GitHub? 
+Team
+Enterprise
+Explore 
+Marketplace
+Pricing 
+Search
+Sign in
+Sign up
+jx3-gitops-repositories
+/
+jx3-kubernetes
+Template
+519
+Code
+Issues
+4
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+jx3-kubernetes/versionStream/git-operator/job.yaml
+@pow-devops2020
+pow-devops2020 chore: upgrade version stream
+Latest commit b24c034 10 days ago
+ History
+ 2 contributors
+@pow-devops2020@jstrachan
+63 lines (63 sloc)  1.47 KB
+ 
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: jx-boot
+    jenkins-x.io/kind: jx-git-operator
+spec:
+  backoffLimit: 4
+  completions: 1
+  parallelism: 1
+  template:
+    metadata:
+      labels:
+        app: jx-boot
+        jenkins-x.io/kind: jx-git-operator
+    spec:
+      initContainers:
+      - args:
+        - gitops
+        - git
+        - clone
+        command:
+        - jx
+        env:
+        - name: XDG_CONFIG_HOME
+          value: /workspace/xdg_config
+        envFrom:
+        - secretRef:
+            name: jx-boot-job-env-vars
+            optional: true
+        image: ghcr.io/jenkins-x/jx-boot:3.2.188
+        name: git-clone
+        volumeMounts:
+        - mountPath: /workspace
+          name: workspace-volume
+        workingDir: /workspace
+      containers:
+      - args:
+        - apply
+        command:
+        - make
+        env:
+        - name: XDG_CONFIG_HOME
+          value: /workspace/xdg_config
+        envFrom:
+        - secretRef:
+            name: jx-boot-job-env-vars
+            optional: true
+        image: ghcr.io/jenkins-x/jx-boot:3.2.188
+        imagePullPolicy: Always
+        name: job
+        volumeMounts:
+        - mountPath: /workspace
+          name: workspace-volume
+        workingDir: /workspace/source
+      dnsPolicy: ClusterFirst
+      restartPolicy: Never
+      schedulerName: default-scheduler
+      serviceAccountName: jx-boot-job
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: workspace-volume
+        emptyDir: {}
+
